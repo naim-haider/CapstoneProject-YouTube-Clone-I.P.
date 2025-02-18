@@ -5,6 +5,7 @@ import connectDB from "./database/db.js";
 import userRoutes from "./routes/UserRoutes.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
 import videoRoutes from "./routes/VideoRoutes.js";
+import commentRoutes from "./routes/CommentRoutes.js";
 
 connectDB();
 
@@ -21,6 +22,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/channels", channelRoutes);
 // Use video routes
 app.use("/api/videos", videoRoutes);
+// Use comment routes
+app.use("/api/comments", commentRoutes);
 
 const PORT = process.env.PORT || 5005;
 
