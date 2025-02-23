@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./database/db.js";
+import cors from "cors";
 //=== Routes import ===//
 import userRoutes from "./routes/UserRoutes.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
@@ -13,6 +14,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // to parse JSON bodies
 
 // ===All Routes=== //
