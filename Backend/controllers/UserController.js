@@ -60,3 +60,42 @@ export const getUserInfo = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params; // Get the user ID from the URL params
+    console.log(id);
+
+    // Find the user by the provided ID and exclude the password field
+    const user = await User.findById(id).select("-password");
+
+    // If no user is found, return a 404 error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send the user's data in the response
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    // Fetch all users from the database (excluding the password field)
+    const users = await User.find().select("-password");
+
+    // If no users are found, return a 404 error
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    // Send the users data in the response
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
