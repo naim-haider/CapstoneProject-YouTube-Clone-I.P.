@@ -5,6 +5,10 @@ import HomePage from "./Pages/HomePage";
 import SignupPage from "./Pages/SignupPage";
 import LoginPage from "./Pages/LoginPage";
 import { getVideos } from "./api/videoApi";
+import Header from "./Components/Header";
+import Sidebar from "./Components/Sidebar";
+import CreateChannelPage from "./Pages/CreateChannelPage";
+import ChannelPage from "./Pages/ChannelPage";
 
 function App() {
   const { videos, error } = getVideos();
@@ -31,6 +35,14 @@ function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
+        <Header
+          onToggleSidebar={toggleSidebar}
+          isOpen={isSidebarOpen}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onSearch={handleSearch}
+        />
+        <Sidebar isOpen={isSidebarOpen} onToggleSidebar={toggleSidebar} />
         <Routes>
           <Route
             path="/"
@@ -45,6 +57,8 @@ function App() {
           />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/create-channel" element={<CreateChannelPage />} />
+          <Route path="/channel" element={<ChannelPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

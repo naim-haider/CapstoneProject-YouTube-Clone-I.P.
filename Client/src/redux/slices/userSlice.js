@@ -17,6 +17,13 @@ const userSlice = createSlice({
       );
       localStorage.setItem("YTuserToken", action.payload.YTtoken);
     },
+    // Add channel to user's list of channels
+    addChannelToUser: (state, action) => {
+      if (state.YTuserInfo) {
+        state.YTuserInfo.channels.push(action.payload); // Add the new channel ID to the user's channels array
+        localStorage.setItem("YTuserInfo", JSON.stringify(state.YTuserInfo)); // Persist updated user to localStorage
+      }
+    },
     logoutUser: (state) => {
       state.YTuserInfo = null;
       state.YTtoken = null;
@@ -27,5 +34,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser } = userSlice.actions;
+export const { loginUser, logoutUser, addChannelToUser } = userSlice.actions;
 export default userSlice.reducer;
