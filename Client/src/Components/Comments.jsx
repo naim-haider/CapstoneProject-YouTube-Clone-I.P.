@@ -120,7 +120,7 @@ const Comments = ({ videoId }) => {
         {comments?.map((comment) => {
           const user = users.filter((user) => user._id === comment.userId);
           // console.log("user", user);
-          console.log(comment);
+          // console.log(comment);
 
           const uploadTime = getTimeDuration(comment?.updatedAt);
           return (

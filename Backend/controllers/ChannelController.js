@@ -7,7 +7,7 @@ export const createChannel = async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   // console.log(req);
-  console.log(user);
+  // console.log(user);
 
   try {
     // If the user already has a channel, do not allow creating another one
@@ -21,7 +21,7 @@ export const createChannel = async (req, res) => {
     if (existingChannel) {
       return res.status(400).json({ message: "Channel name already exists" });
     }
-    console.log(user);
+    // console.log(user);
 
     // Create the new channel
     const channel = new Channel({

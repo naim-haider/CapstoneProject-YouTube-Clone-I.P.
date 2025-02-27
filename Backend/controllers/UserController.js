@@ -49,7 +49,7 @@ export const signIn = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params; // Get the user ID from the URL params
-    console.log(id);
+    // console.log(id);
 
     // Find the user by the provided ID and exclude the password field
     const user = await User.findById(id).select("-password");
