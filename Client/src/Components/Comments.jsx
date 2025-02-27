@@ -20,6 +20,7 @@ const Comments = ({ videoId }) => {
   const users = JSON.parse(localStorage.getItem("users"));
   const userInfo = useSelector((state) => state.user.YTuserInfo);
   // console.log(userInfo);
+  console.log(users);
 
   // console.log("comments", comments);
 
@@ -118,9 +119,9 @@ const Comments = ({ videoId }) => {
 
       <div>
         {comments?.map((comment) => {
-          const user = users.filter((user) => user._id === comment.userId);
-          // console.log("user", user);
-          // console.log(comment);
+          const user = users.filter((user) => user._id === comment.userId._id);
+          console.log("user", user);
+          console.log(comment);
 
           const uploadTime = getTimeDuration(comment?.updatedAt);
           return (
