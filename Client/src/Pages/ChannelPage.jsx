@@ -4,17 +4,18 @@ import { setChannels } from "../redux/slices/channelSlice";
 import axios from "axios";
 import { getVideos } from "../api/videoApi";
 import { Link } from "react-router-dom";
+import { getTimeDuration } from "../utils/uploadTime";
 
 const ChannelPage = () => {
-  const { videos, error } = getVideos();
+  const { videos } = getVideos();
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
   // const channelId = channels._id;
   const userInfo = useSelector((state) => state.user.YTuserInfo);
-  console.log(userInfo);
+  // console.log(userInfo);
   const channelId = userInfo?.channels[0];
   // console.log(channelId);
-  console.log(channels);
+  // console.log(channels);
 
   useEffect(() => {
     const fetchChannels = async () => {
@@ -22,12 +23,12 @@ const ChannelPage = () => {
         `http://localhost:5005/api/channels/${channelId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       ); // Get channels from the backend
       dispatch(setChannels(response.data)); // Store channels in Redux state and localStorage
-      console.log(response.data);
+      // console.log(response.data);
     };
 
     fetchChannels();
@@ -42,13 +43,13 @@ const ChannelPage = () => {
 
   return (
     <>
-      <div className="absolute top-20 md:left-10 lg:left-56 md:top-48 lg:top-28 w-screen  md:w-[80%] md:h-[30%] h-[10%] md:rounded-3x">
+      <div className="absolute top-20 md:left-10 lg:left-30 xl:left-56 md:top-40 lg:top-28 w-screen  md:w-[90%] lg:w-[85%] md:h-[20%] xl:h-[30%] h-[12%] ">
         <img
           src={channels?.channel?.channelBanner}
           alt="channelBanner"
           className="h-full w-full md:rounded-3xl"
         />
-        <div className="flex flex-wrap ml-16 gap-8 my-3">
+        <div className="flex flex-wrap  ml-16 md:ml-0 gap-8 my-3">
           <img
             src={userInfo?.avatar}
             alt="userAvatar"
@@ -75,29 +76,10 @@ const ChannelPage = () => {
             </div>
           </div>
         </div>
-        <hr className="my-3" />
+        <hr className="my-3 border-gray-400" />
         <div className="my-6 text-center text-2xl font-bold">All videos</div>
         <div className="flex flex-wrap pb-20 gap-5 my-5">
           {userVideos.map((video) => {
-            function getTimeDuration(uploadDate) {
-              //=== setting upload time starts here ===//
-              const uploadTime = new Date(uploadDate); // Convert the uploaded time to a Date object
-              const currentTime = new Date(); // Get the current date and time
-              const durationInMilliseconds = currentTime - uploadTime; // Difference in milliseconds
-              const hours = durationInMilliseconds / (1000 * 60 * 60); // Convert milliseconds to hours
-
-              if (hours < 24) {
-                // If the duration is less than 24 hours, return in hours
-                return `${Math.floor(hours)} hour${
-                  Math.floor(hours) !== 1 ? "s" : ""
-                } ago`;
-              } else {
-                // If the duration is more than 24 hours, return in days
-                const days = Math.floor(hours / 24);
-                return `${days} day${days !== 1 ? "s" : ""} ago`;
-              }
-            }
-            // console.log(getTimeDuration(video.uploadDate));
             const uploadTime = getTimeDuration(video?.uploadDate);
             return (
               <div
@@ -127,7 +109,7 @@ const ChannelPage = () => {
                 <div className="w-full flex px-2 ">
                   <div className="h-16 w-10 mt-3">
                     <img
-                      src={userInfo.avatar}
+                      src={userInfo?.avatar}
                       alt="avatar image"
                       className="h-8 w-8 mr-20 mt-2 rounded-full"
                     />

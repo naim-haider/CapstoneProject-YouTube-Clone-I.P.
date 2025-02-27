@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/slices/userSlice";
 
-const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
+const Header = ({
+  onToggleSidebar,
+  isOpen,
+  setSearchQuery,
+  onSearch,
+  isInputVisible,
+}) => {
   const [isLogin, setIsLogin] = useState(false);
   const [hasChannel, setHasChannel] = useState(false);
   const [open, setOpen] = useState(false);
@@ -36,14 +42,26 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
     }
   };
 
+  useEffect(() => {
+    if (isInputVisible) {
+      setQuery("");
+    }
+  }, [isInputVisible]);
+
   const handleSearchChange = (e) => {
     const searchQuery = e.target.value;
     setQuery(searchQuery);
     setSearchQuery(searchQuery); // Pass the search query to parent component
   };
+
+  const handleClearSearch = () => {
+    setQuery("");
+    setSearchQuery("");
+    onSearch();
+  };
   return (
     <>
-      <nav className="h-[7%] bg-white z-50 fixed top-0 md:h-[11%] w-screen px-5 md:py-3 py-8 flex justify-between">
+      <nav className="h-[7%] w-screen bg-white z-50 fixed top-0 md:h-[11%] lg:h-[8%] xl:h-[12%] px-5 md:py-3 py-8 flex justify-between">
         <div className="flex ml-2 gap-3 items-center">
           <div
             onClick={onToggleSidebar}
@@ -55,44 +73,53 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
           </div>
           <Link to={"/"}>
             <div className="h-10 flex justify-center items-center cursor-pointer">
-              <img src="/logo.png" alt="youtube-icon" className="h-14 w-48" />
+              <img
+                src="/logo.png"
+                alt="youtube-icon"
+                className="md:h-14 w-48"
+              />
             </div>
           </Link>
         </div>
-        <div className="hidden md:flex md:items-center md:w-6/12 md:mr-[13%]">
-          <div className="h-16 w-full flex relative justify-end items-center">
+        <div className="hidden lg:flex md:items-center xl:w-6/12 md:mr-[13%]">
+          <div className="h-16 w-[50%] xl:w-[100%] flex relative justify-end items-center">
             <input
               type="text"
               value={query}
               onChange={handleSearchChange}
-              className="h-full w-10/12 font-medium text-lg text-black  px-3 py-1 rounded-l-full border-2 border-slate-300 focus:outline-blue-400 placeholder:font-normal placeholder:pl-4 placeholder:text-2xl"
+              className="h-full w-10/12 lg:w-full font-medium text-2xl text-black  px-8 py-1 rounded-l-full border-2 border-slate-300 focus:outline-blue-400 placeholder:font-normal placeholder:pl-4 placeholder:text-2xl"
               placeholder="Search"
             />
             <div
               onClick={onSearch}
-              className="absolute h-16 w-26 bg-slate-100 border-2 cursor-pointer left-[99.8%] border-slate-300 flex justify-center items-center rounded-r-full"
+              className="absolute h-16 w-26 bg-slate-100 border-2 cursor-pointer left-[99.8%] border-slate-300 flex justify-center items-center  rounded-r-full"
             >
-              <i className="fa-solid fa-xl fa-magnifying-glass" />
+              <i className="fa-solid fa-xl mt-1 fa-magnifying-glass" />
             </div>
-            <div className="absolute h-16 w-16 bg-slate-100 cursor-pointer hover:bg-slate-200 left-[113%] border-slate-300 flex justify-center items-center rounded-full">
+            <div className="absolute h-16 w-16 bg-slate-100 cursor-pointer hover:bg-slate-200 xl:left-[123%] lg:-right-[175%] border-slate-300 flex justify-center items-center rounded-full">
               <i className="fa-solid fa-microphone fa-lg" />
             </div>
           </div>
         </div>
         {/* only for tab */}
-        {/* <div className="hidden md:flex lg:hidden md:items-center md:mr-[%]">
+        <div className="hidden md:flex lg:hidden md:items-center md:mr-[%]">
           <div className="h-16 w-full flex relative justify-end items-center">
-            <div className="absolute right-3">
+            <div
+              onClick={onSearch}
+              className={`absolute z-100 ${
+                isInputVisible ? "-right-90" : "right-3"
+              }`}
+            >
               <i className="fa-solid fa-xl fa-magnifying-glass" />
             </div>
             <div className="absolute cursor-pointer left-4 flex justify-center items-center">
               <i className="fa-solid  fa-microphone fa-lg" />
             </div>
           </div>
-        </div> */}
+        </div>
 
         <div className="flex md:gap-3 items-center">
-          <Link>
+          <Link to={"/create-video"}>
             <div className="h-16 w-40 hidden md:flex gap-3 md:justify-center md:items-center rounded-full cursor-pointer  bg-slate-100 hover:bg-slate-200">
               <i className="fa-solid fa-xl fa-plus fa-lg ml-0" />
               <span className="mr-0 font-medium text-2xl">Create</span>
@@ -104,9 +131,30 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
           <div className="h-16 w-16 flex justify-center items-center cursor-pointer rounded-full hover:bg-slate-200">
             <i className="fa-regular fa-xl fa-bell fa-lg" />
           </div>
-          <div className="h-16 w-16 md:hidden flex justify-center items-center cursor-pointer rounded-full  hover:bg-slate-200">
+          {/* for mobile search */}
+          <div
+            onClick={onSearch}
+            className="h-16 w-16 md:hidden flex z-100 justify-center items-center cursor-pointer rounded-full  hover:bg-slate-200"
+          >
             <i className="fa-solid fa-magnifying-glass fa-lg" />
           </div>
+          {isInputVisible && (
+            <div className="flex items-center lg:hidden absolute z-50 bg-white left-0">
+              <input
+                type="text"
+                value={query}
+                onChange={handleSearchChange}
+                className="h-full w-screen font-medium text-xl md:text-2xl text-black px-12 md:pl-16 py-2 md:py-5 rounded-full border-2 border-slate-300 focus:outline-blue-400 placeholder:font-normal placeholder:pl-4 placeholder:text-2xl"
+                placeholder="Search"
+              />
+              <div
+                onClick={handleClearSearch}
+                className="absolute left-5 md:left-8 cursor-pointer"
+              >
+                <i className="fa-solid fa-times fa-lg text-gray-500" />
+              </div>
+            </div>
+          )}
           <div className=" hidden md:flex justify-center items-center cursor-pointer md:mr-2 rounded-full hover:bg-slate-200">
             {/*  */}
             {isLogin ? (
@@ -143,7 +191,7 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                           <p className="mt-1 text-black">{userInfo.userName}</p>
                           <p className="mt-1 text-black">{userInfo.email}</p>
                         </li>
-                        <hr className="" />
+                        <hr className="border-gray-400" />
                         {hasChannel ? (
                           <Link to={"/channel"}>
                             <li className="font-medium text-black py-3 text-center rounded-xl hover:bg-gray-200">
@@ -157,7 +205,7 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                             </li>
                           </Link>
                         )}
-                        <hr className="dark:border-gray-700" />
+                        <hr className="border-gray-400" />
                         <li className="font-medium mt-3">
                           <div
                             onClick={handleLogout}
@@ -186,7 +234,6 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                     </div>
                   )}
                 </div>
-                {/*  */}
               </div>
             ) : (
               <div
@@ -251,38 +298,37 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                 )}
               </div>
             )}
-            {/*  */}
           </div>
         </div>
       </nav>
       <>
         {!isOpen ? (
           <div
-            className="hidden fixed top-18 md:block md:px-3 md:overflow-auto md:h-screen md:w-[10%]  -ml-5"
+            className="hidden fixed top-18 lg:block lg:px-3 md:overflow-auto md:h-screen xl:w-[10%] w-[16%]  -ml-5"
             id="left-bar"
           >
-            <div className="w-full ">
+            <div className="w-full">
               <Link to={"/"}>
-                <div className="h-10 w-[90%] gap-2 mt-5 py-12 flex flex-col justify-center items-center hover:bg-slate-100 rounded-md cursor-pointer ">
+                <div className="h-10 w-[70%] gap-2 mt-5 py-12 flex flex-col justify-center items-center hover:bg-slate-100 rounded-md cursor-pointer ">
                   <div className="w-7 h-7">
                     <i className="fa-solid fa-xl fa-house fa-lg " />
                   </div>
                   <div className="text-md font-sans">Home</div>
                 </div>
               </Link>
-              <div className="h-10 w-[90%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
+              <div className="h-10 w-[80%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
                 <div className="w-3 h-7">
                   <i className="fa-regular fa-xl fa-file-video fa-lg" />
                 </div>
                 <div className="text-md  font-sans">Shorts</div>
               </div>
-              <div className="h-10  w-[90%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
+              <div className="h-10  w-[80%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
                 <div className="w-7 h-7">
                   <i className="fa-regular fa-xl fa-folder fa-lg" />
                 </div>
                 <div className=" text-md  font-sans">Subscription</div>
               </div>
-              <div className="h-10  w-[90%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
+              <div className="h-10  w-[80%] gap-2 py-12 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-slate-100 px-2">
                 <div className="">
                   <i className="fa-regular fa-xl fa-user"></i>
                 </div>
@@ -387,7 +433,7 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                 </div>
 
                 {open && (
-                  <div className="absolute bottom-14 right-2 w-60 px-5 py-3 dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
+                  <div className="absolute bottom-14 right-2 w-60 px-5 py-3 bg-white rounded-lg shadow border mt-5">
                     <ul className="space-y-3 z-40 dark:text-white">
                       <li className="font-serif font-thin flex flex-col items-center justify-center">
                         <div className="w-8 h-8 bg-black flex items-center justify-center rounded-full overflow-hidden">
@@ -398,7 +444,21 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                         <p className="mt-1 text-black">{userInfo.userName}</p>
                         <p className="mt-1 text-black">{userInfo.email}</p>
                       </li>
-                      <hr className="dark:border-gray-700" />
+                      <hr className="border-gray-400" />
+                      {hasChannel ? (
+                        <Link to={"/channel"}>
+                          <li className="font-medium text-black pb-3 text-center rounded-xl hover:bg-gray-200">
+                            Go to Channel
+                          </li>
+                        </Link>
+                      ) : (
+                        <Link to={"/create-channel"}>
+                          <li className="font-medium text-black py-3 text-center rounded-xl hover:bg-gray-200">
+                            Create Channel
+                          </li>
+                        </Link>
+                      )}
+                      <hr className="border-gray-400" />
                       <li className="font-medium">
                         <div
                           onClick={handleLogout}
@@ -427,7 +487,6 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
                   </div>
                 )}
               </div>
-              {/*  */}
             </div>
           ) : (
             <div
@@ -492,7 +551,6 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
               )}
             </div>
           )}
-          {/*  */}
         </div>
       </section>
     </>
@@ -500,40 +558,3 @@ const Header = ({ onToggleSidebar, isOpen, setSearchQuery, onSearch }) => {
 };
 
 export default Header;
-
-//  <div className="h-full w-[100%] md:w-[80%]">
-//
-
-//  </div>;
-
-// -------------------------------------- //
-// import React from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { logout } from "../redux/slices/userSlice"; // Import logout action
-
-// const Header = () => {
-//   const dispatch = useDispatch();
-//   const { user } = useSelector((state) => state.auth);
-
-//   const handleLogout = () => {
-//     dispatch(logout()); // Dispatch logout action to clear user and token from Redux store
-//   };
-
-//   return (
-//     <header className="header">
-//       <div className="logo">YouTube Clone</div>
-//       <div className="user-info">
-//         {user ? (
-//           <div>
-//             <p>Welcome, {user.username}</p>
-//             <button onClick={handleLogout}>Logout</button>
-//           </div>
-//         ) : (
-//           <button>Sign In</button> // Optionally, redirect to login page
-//         )}
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;

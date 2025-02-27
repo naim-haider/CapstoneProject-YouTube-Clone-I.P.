@@ -25,8 +25,8 @@ const VideoCard = ({ video }) => {
 
   return (
     <>
-      <div className="h-80 w-[94%] md:w-[32%] ml-6 md:ml-0">
-        <Link to={``}>
+      <div className="h-80 w-[94%] md:w-[32%] ml-7 md:ml-0">
+        <Link to={`/video/${video?._id}`}>
           <div className="w-full" id="image">
             <img
               src={video?.thumbnailUrl}

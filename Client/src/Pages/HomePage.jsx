@@ -4,15 +4,14 @@ import { getVideos } from "../api/videoApi";
 import VideoList from "../Components/VideoList";
 
 const HomePage = ({ filteredVideos, setFilteredVideos, searchQuery }) => {
-  const { videos, error } = getVideos();
+  const { videos } = getVideos();
   const [activeCategory, setActiveCategory] = useState("All");
 
   // Handle the category filter
   const handleFilter = (category) => {
-    setActiveCategory(category); // Set the active category for filter
+    setActiveCategory(category);
   };
 
-  // Effect for applying search and filter
   useEffect(() => {
     if (!videos || videos.length === 0) {
       return;
@@ -21,7 +20,6 @@ const HomePage = ({ filteredVideos, setFilteredVideos, searchQuery }) => {
     if (activeCategory === "All") {
       setFilteredVideos(videos); // Show all videos
     } else {
-      // Apply both search and category filter
       const filteredByCategory = videos.filter(
         (video) => video.category === activeCategory
       );
@@ -34,7 +32,7 @@ const HomePage = ({ filteredVideos, setFilteredVideos, searchQuery }) => {
     if (videos && videos.length > 0) {
       setFilteredVideos(videos); // Set initial filtered videos to all videos
     }
-  }, [videos]); // Run this effect when videos are loaded
+  }, [videos]);
   return (
     <div>
       <FilterButtons onFilter={handleFilter} />

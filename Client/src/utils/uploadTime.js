@@ -14,4 +14,3 @@ export function getTimeDuration(uploadDate) {
   }
 }
 // console.log(getTimeDuration(video.uploadDate));
-//=== setting upload time ends here ===//

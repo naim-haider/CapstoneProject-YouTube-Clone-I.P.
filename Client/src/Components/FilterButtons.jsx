@@ -65,7 +65,7 @@ const FilterButtons = ({ onFilter }) => {
 
   return (
     <section
-      className="fixed md:top-20 top-15.5 py-3 bg-white  overflow-x-auto md:left-7 lg:left-40 w-screen  md:w-full px-2 md:px-3 h-[10%] flex items-center md:mt-5"
+      className="fixed md:top-22 top-15.5 py-3 bg-white  overflow-x-auto md:left-7 lg:left-28 xl:left-32 w-screen  md:w-full px-2 md:px-3 h-[10%] flex items-center md:mt-5 xl:mt-2"
       id="feature-box"
     >
       {canScrollLeft && (
@@ -83,7 +83,7 @@ const FilterButtons = ({ onFilter }) => {
       >
         <div
           onClick={() => onFilter("All")}
-          className="h-14 w-18 px-5 bg-black cursor-pointer min-w-fit  flex justify-center items-center text-white rounded-2xl"
+          className="md:h-14 h-12 w-18 px-5 bg-black cursor-pointer min-w-fit  flex justify-center items-center text-white rounded-2xl"
         >
           <p className="md:text-xl font-medium">All</p>
         </div>
@@ -91,7 +91,7 @@ const FilterButtons = ({ onFilter }) => {
           <div
             key={category}
             onClick={() => onFilter(category)}
-            className="h-14 px-5 md:text-2xl text-xl min-w-fit rounded-2xl font-medium bg-slate-200 hover:bg-slate-300  cursor-pointer flex justify-center ml-2 items-center "
+            className="md:h-14 h-12 px-5 md:text-2xl text-xl min-w-fit rounded-2xl font-medium bg-slate-200 hover:bg-slate-300  cursor-pointer flex justify-center ml-2 items-center "
           >
             <p>{category}</p>
           </div>

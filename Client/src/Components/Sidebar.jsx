@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Sidebar = ({ isOpen, onToggleSidebar }) => {
   // console.log(isOpen);
 
   return (
     <div
-      className={`fixed top-0 left-0 w-[20%] md:overflow-auto  md:px-3 h-full bg-gray-200 text-black transition-transform duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 xl:w-[20%] md:overflow-auto  md:px-3 h-full bg-gray-200 text-black transition-transform duration-500 ease-in-out ${
         isOpen
           ? "transform translate-x-0 block z-[100] "
           : "transform -translate-x-full hidden"

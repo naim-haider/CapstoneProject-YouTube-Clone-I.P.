@@ -26,13 +26,12 @@ const CreateChannelPage = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       );
-      console.log("channel data", data);
+      // console.log("channel data", data);
       dispatch(addChannel({ channels: data }));
-      // Add the new channel to the user's list of channels (userSlice)
       if (userInfo) {
         dispatch(addChannelToUser(data._id)); // Add channel ID to user's list
       }
@@ -43,8 +42,8 @@ const CreateChannelPage = () => {
   };
   return (
     <>
-      <div className="flex h-full mt-20 md:mt-32 ">
-        <div className="m-auto shadow-xl shadow-cyan-500/50">
+      <div className="flex h-full mt-20 md:mt-34 ">
+        <div className="m-auto shadow-xl shadow-red-100">
           <div className="">
             <div className="relative w-full flex justify-center items-center px-5 py-2 font-medium tracking-wide text-white   bg-[#fe0000] rounded-md">
               <svg
@@ -66,7 +65,7 @@ const CreateChannelPage = () => {
               </svg>
               <span className="pl-2 mx-1 py-2">Create Your Own Channel </span>
             </div>
-            <div className="mt-5 rounded-lg shadow">
+            <div className="mt-5 rounded-lg">
               <div className="px-5 py-5">
                 <input
                   type="text"
@@ -94,7 +93,7 @@ const CreateChannelPage = () => {
                 />
               </div>
               <hr className="mt-4" />
-              <div className="flex flex-row-reverse p-3">
+              <div className="flex flex-row-reverse items-center px-3 py-6">
                 <div className="flex-initial pl-3">
                   <div
                     onClick={handleCreateChannel}

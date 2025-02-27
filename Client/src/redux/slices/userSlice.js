@@ -17,7 +17,6 @@ const userSlice = createSlice({
       );
       localStorage.setItem("YTuserToken", action.payload.YTtoken);
     },
-    // Add channel to user's list of channels
     addChannelToUser: (state, action) => {
       if (state.YTuserInfo) {
         state.YTuserInfo.channels.push(action.payload); // Add the new channel ID to the user's channels array

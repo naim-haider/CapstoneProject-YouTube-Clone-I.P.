@@ -1,22 +1,25 @@
-import "./App.css";
 import React, { Suspense, lazy, useState } from "react";
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
-import SignupPage from "./Pages/SignupPage";
-import LoginPage from "./Pages/LoginPage";
 import { getVideos } from "./api/videoApi";
 import Header from "./Components/Header";
-import Sidebar from "./Components/Sidebar";
-import CreateChannelPage from "./Pages/CreateChannelPage";
-import ChannelPage from "./Pages/ChannelPage";
-import VideoPage from "./Pages/VideoPage";
-import CreateVideoPage from "./Pages/CreateVideoPage";
+
+// For performance Optimization //
+const HomePage = lazy(() => import("./Pages/HomePage"));
+const VideoPage = lazy(() => import("./Pages/VideoPage"));
+const SignupPage = lazy(() => import("./Pages/SignupPage"));
+const LoginPage = lazy(() => import("./Pages/LoginPage"));
+const CreateChannelPage = lazy(() => import("./Pages/CreateChannelPage"));
+const ChannelPage = lazy(() => import("./Pages/ChannelPage"));
+const CreateVideoPage = lazy(() => import("./Pages/CreateVideoPage"));
+const Sidebar = lazy(() => import("./Components/Sidebar"));
 
 function App() {
-  const { videos, error } = getVideos();
+  const { videos } = getVideos();
   const [filteredVideos, setFilteredVideos] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isInputVisible, setIsInputVisible] = useState(false); //for mobile search
 
   // Toggle function to open/close the sidebar
   const toggleSidebar = () => {
@@ -25,6 +28,7 @@ function App() {
 
   // Handle the search logic when user clicks search
   const handleSearch = () => {
+    setIsInputVisible(!isInputVisible);
     if (!searchQuery.trim()) {
       setFilteredVideos(videos); // Reset to show all videos
     } else {
@@ -43,6 +47,7 @@ function App() {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onSearch={handleSearch}
+          isInputVisible={isInputVisible}
         />
         <Sidebar isOpen={isSidebarOpen} onToggleSidebar={toggleSidebar} />
         <Routes>

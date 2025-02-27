@@ -7,7 +7,6 @@ const CreateVideoPage = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [hasChannel, setHasChannel] = useState(false);
   const userInfo = useSelector((state) => state.user.YTuserInfo);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -20,12 +19,15 @@ const CreateVideoPage = () => {
   const categories = [
     "Game",
     "Music",
+    "News",
+    "Cricket",
+    "Football",
+    "Learn Coding",
     "React routers",
     "Computer programming",
     "Reverberation",
     "Movie musicals",
     "India national cricket team",
-    "News",
     "Mixes",
     "1990s",
     "Telugu cinema",
@@ -33,9 +35,6 @@ const CreateVideoPage = () => {
     "Dramedy",
     "Dubbing",
     "Indian soap opera",
-    "Cricket",
-    "Football",
-    "Learn Coding",
   ];
 
   const channelId = userInfo?.channels[0];
@@ -69,17 +68,15 @@ const CreateVideoPage = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       );
       console.log("video created ", data);
       //   console.log("user login data", data);
-      //   dispatch(loginUser({ YTuserInfo: data.user, YTtoken: data.token }));
       navigate("/channel");
-    } catch (error) {
-      console.log(error);
-
+    } catch (err) {
+      // console.log(error);
       setError("Invalid Credentials");
     }
   };
@@ -154,7 +151,7 @@ const CreateVideoPage = () => {
                       name="choices"
                       className="cursor-pointer"
                     >
-                      {categories.map((category) => (
+                      {categories?.map((category) => (
                         <option key={category} value={category}>
                           {category}
                         </option>

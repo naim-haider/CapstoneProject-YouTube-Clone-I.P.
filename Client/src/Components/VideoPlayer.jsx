@@ -7,6 +7,8 @@ import {
   AiFillLike,
 } from "react-icons/ai";
 import ReactPlayer from "react-player";
+import { RiShareForwardLine } from "react-icons/ri";
+import { BsThreeDots } from "react-icons/bs";
 import SuggestedVideo from "./SuggestedVideo";
 import axios from "axios";
 import Comments from "./Comments";
@@ -15,8 +17,8 @@ import { setChannels } from "../redux/slices/channelSlice";
 const VideoPlayer = ({ video }) => {
   const { channels } = useSelector((state) => state.channels);
   const [user, setUser] = useState();
-  const [relatedVideo, setRelatedVideo] = useState();
-  const [nonRelatedVideo, setNonRelatedVideo] = useState();
+  const [relatedVideo, setRelatedVideo] = useState([]);
+  const [nonRelatedVideo, setNonRelatedVideo] = useState([]);
   const [channel, setChannel] = useState();
   const [likes, setLikes] = useState(video?.likes || 0);
   const [dislikes, setDislikes] = useState(video?.dislikes || 0);
@@ -30,6 +32,8 @@ const VideoPlayer = ({ video }) => {
   // console.log(video);
   // console.log(videoId);
   // console.log(channelId);
+  // console.log("rel", relatedVideo);
+  // console.log("non", nonRelatedVideo);
 
   // to get userinfo
   useEffect(() => {
@@ -47,31 +51,48 @@ const VideoPlayer = ({ video }) => {
   // to get Channel
   useEffect(() => {
     const fetchChannel = async () => {
-      const response = await axios.get(
-        `http://localhost:5005/api/channels/${video?.channelId?._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
-          },
-        }
-      );
-      dispatch(setChannels(response.data));
-      setChannel(response.data);
-      // console.log(response.data);
+      const token = localStorage.getItem("YTuserToken");
+      if (!token) {
+        console.log("No token found in localStorage");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5005/api/channels/${video?.channelId?._id}`,
+          {
+            headers: {
+              Authorization: `JWT ${token}`,
+            },
+          }
+        );
+        dispatch(setChannels(response.data));
+        setChannel(response.data);
+      } catch (error) {
+        console.error("Error fetching channel data:", error);
+      }
     };
 
-    fetchChannel();
-  }, [video.channelId._id]);
+    if (video?.channelId?._id) {
+      fetchChannel();
+    }
+  }, [video?.channelId?._id]);
 
   // subscribe the channel
   const handleSubscribe = async () => {
+    const userToken = localStorage.getItem("YTuserToken");
+
+    if (!userToken) {
+      alert("You must be logged in to subscribe to a channel!");
+      return;
+    }
     try {
       const response = await axios.post(
         `http://localhost:5005/api/channels/${channel.channel._id}/subscribe`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${userToken}`,
           },
         }
       );
@@ -92,11 +113,11 @@ const VideoPlayer = ({ video }) => {
         `http://localhost:5005/api/videos/${video?._id}/related`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       );
-      setRelatedVideo(response.data);
+      setRelatedVideo(response.data.relatedVideos);
       // console.log(response.data);
     };
 
@@ -113,11 +134,11 @@ const VideoPlayer = ({ video }) => {
         `http://localhost:5005/api/videos/${video?._id}/non-reated-video`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       );
-      setNonRelatedVideo(response.data);
+      setNonRelatedVideo(response.data.nonRelatedVideos);
       // console.log(response.data);
     };
 
@@ -127,7 +148,12 @@ const VideoPlayer = ({ video }) => {
 
   // Handle like and dislike actions
   const handleLike = async () => {
-    console.log(localStorage.getItem("YTuserToken"));
+    const userToken = localStorage.getItem("YTuserToken");
+
+    if (!userToken) {
+      alert("You must be logged in to like the video!");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -135,7 +161,7 @@ const VideoPlayer = ({ video }) => {
         { action: "like" },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${userToken}`,
           },
         }
       );
@@ -150,13 +176,19 @@ const VideoPlayer = ({ video }) => {
   };
 
   const handleDislike = async () => {
+    const userToken = localStorage.getItem("YTuserToken");
+
+    if (!userToken) {
+      alert("You must be logged in to dislike the video!");
+      return;
+    }
     try {
       const response = await axios.post(
         `http://localhost:5005/api/videos/${video._id}/like-dislike`,
         { action: "dislike" },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${userToken}`,
           },
         }
       );
@@ -171,17 +203,16 @@ const VideoPlayer = ({ video }) => {
   };
 
   return (
-    <div className="px-5 justify-center 2xl:px-4 lg:flex mt-10">
-      <div className=" flex justify-center flex-row h-[calc(100%-56px)] mt-16">
-        <div className="w-full max-w-[1580px] flex flex-col lg:flex-row">
+    <div className="px-5 justify-center 2xl:px-4 xl:flex mt-10 lg:w-[90%] xl:w-[90%] relative lg:left-24 xl:left-28">
+      <div className="  h-[calc(100%-56px)] mt-16">
+        <div className="w-full max-w-[1580px] flex flex-col ">
           <div className="flex flex-col px-4 py-3 lg:py-6">
-            <div className="h-[200px] md:h-[700px] ml-[-16px] mr-[-16px] lg:ml-0 lg:mr-0 rounded-4xl">
+            <div className="h-[200px] xl:h-[700px] md:h-full ml-[-16px] mr-[-16px] lg:ml-0 lg:mr-0">
               <ReactPlayer
                 url={video?.videoUrl}
                 height="100%"
                 width="100%"
                 controls
-                style={{ backgroundColor: "#000000" }}
                 playing={true}
               />
             </div>
@@ -189,7 +220,7 @@ const VideoPlayer = ({ video }) => {
               {video?.title}
             </div>
             <div className="flex justify-between flex-col md:flex-row mt-4">
-              <div className="flex ">
+              <div className="flex">
                 <div className="flex items-start">
                   <div className="flex h-11 w-11 rounded-full overflow-hidden">
                     <img
@@ -198,7 +229,7 @@ const VideoPlayer = ({ video }) => {
                     />
                   </div>
                 </div>
-                <div className="flex space-x-5">
+                <div className="flex items-center space-x-5">
                   <div className="flex flex-col ml-3">
                     <div className="text-md font-semibold flex items-center">
                       {channel?.channelName}
@@ -209,37 +240,43 @@ const VideoPlayer = ({ video }) => {
                   </div>
                   <span
                     onClick={handleSubscribe}
-                    className="mt-1 text-center bg-red-500 px-3 pt-2 rounded-full text-white cursor-pointer hover:bg-red-700 duration-200 "
+                    className="text-center bg-red-500 px-4 py-2 rounded-full text-white cursor-pointer hover:bg-red-700 duration-200 "
                   >
                     {isSubscribed ? "Unsubscribe" : "Subscribe"}
                   </span>
                 </div>
               </div>
-              <div className="flex mt-4 md:mt-0">
-                <div
-                  onClick={handleLike}
-                  className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] cursor-pointer"
-                >
-                  {isLiked ? (
-                    <AiFillLike className="text-xl mr-2" />
-                  ) : (
-                    <AiOutlineLike className="text-xl mr-2" />
-                  )}
-                  {likes}
+              <div className="flex mt-4 md:mt-0 ">
+                <div className="flex bg-gray-100 rounded-full">
+                  <div
+                    onClick={handleLike}
+                    className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] cursor-pointer"
+                  >
+                    {isLiked ? (
+                      <AiFillLike className="text-xl mr-2" />
+                    ) : (
+                      <AiOutlineLike className="text-xl mr-2" />
+                    )}
+                    {likes}
+                  </div>
+                  <hr className="border-gray-300 border-1 h-[80%] mt-1" />
+                  <div
+                    onClick={handleDislike}
+                    className="flex items-center justify-center h-11 px-4 rounded-3xl bg-white/[0.15] cursor-pointer"
+                  >
+                    {isDisliked ? (
+                      <AiFillDislike className="text-xl" />
+                    ) : (
+                      <AiOutlineDislike className="text-xl" />
+                    )}
+                  </div>
                 </div>
-                <div
-                  onClick={handleDislike}
-                  className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] cursor-pointer ml-4"
-                >
-                  {isDisliked ? (
-                    <AiFillDislike className="text-xl mr-2" />
-                  ) : (
-                    <AiOutlineDislike className="text-xl mr-2" />
-                  )}
-                  {dislikes}
+                <div className="flex items-center gap-2 md:ml-8 ml-3 bg-gray-100 px-6 rounded-full">
+                  <RiShareForwardLine className="text-2xl" />
+                  <span>Share</span>
                 </div>
-                <div className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] ml-4">
-                  {`${video?.views} Views`}
+                <div className="flex items-center bg-gray-100 gap-1 justify-center h-12 px-4 rounded-3xl ml-3">
+                  <BsThreeDots />
                 </div>
               </div>
             </div>
@@ -251,12 +288,13 @@ const VideoPlayer = ({ video }) => {
               <p>Comments</p>
             </div>
           </div>
-          <div className="flex flex-col px-4 py-6 h-full overflow-y-scroll overflow-x-hidden">
+          <div className="flex flex-col px-4 max-h-screen overflow-y-scroll overflow-x-hidden">
             <Comments videoId={video._id} />
           </div>
         </div>
       </div>
-      <div className="mt-15">
+      <hr className="border-gray-400 xl:border-0" />
+      <div className="">
         <SuggestedVideo
           relatedVideo={relatedVideo}
           nonRelatedVideo={nonRelatedVideo}

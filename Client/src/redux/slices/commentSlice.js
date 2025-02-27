@@ -5,6 +5,12 @@ import axios from "axios";
 export const addComment = createAsyncThunk(
   "comments/addComment",
   async ({ videoId, text }, { rejectWithValue }) => {
+    const userToken = localStorage.getItem("YTuserToken");
+
+    if (!userToken) {
+      alert("You must be logged in to post comments!");
+      return rejectWithValue({ message: "User not logged in" });
+    }
     try {
       const response = await axios.post(
         `http://localhost:5005/api/comments`,
@@ -14,7 +20,7 @@ export const addComment = createAsyncThunk(
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${userToken}`,
           },
         }
       );
@@ -63,7 +69,7 @@ export const editComment = createAsyncThunk(
         { text },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
           },
         }
       );
@@ -90,7 +96,7 @@ export const deleteComment = createAsyncThunk(
     try {
       await axios.delete(`http://localhost:5005/api/comments/${commentId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("YTuserToken")}`,
+          Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
         },
       });
 
@@ -101,7 +107,7 @@ export const deleteComment = createAsyncThunk(
       );
       localStorage.setItem(videoId, JSON.stringify(updatedComments));
 
-      return commentId; // Return commentId to delete it from the state
+      return commentId;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

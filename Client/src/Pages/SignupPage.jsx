@@ -29,28 +29,11 @@ const SignupPage = () => {
   };
   return (
     <section className="relative py-20 2xl:py-40 bg-transparent overflow-hidden">
-      <img
-        className="hidden lg:block absolute inset-0 mt-32"
-        src="zospace-assets/lines/line-mountain.svg"
-        alt=""
-      />
-      <img
-        className="hidden lg:block absolute inset-y-0 right-0 -mr-40 -mt-32"
-        src="zospace-assets/lines/line-right-long.svg"
-        alt=""
-      />
       <div className="relative container px-4 mx-auto">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-wrap items-center -mx-4">
-            <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
-              <div className="max-w-md">
-                <span className="text-lg text-[#534c49] font-bold">
-                  Register Account
-                </span>
-              </div>
-            </div>
-            <div className="w-full lg:w-1/2 px-4">
-              <div className="px-6 lg:px-20 py-12 lg:py-24 bg-[#262220] rounded-lg">
+          <div className="flex flex-wrap items-center justify-center -mx-4">
+            <div className="w-full lg:w-2/3 px-4">
+              <div className="px-6 lg:px-20 py-12 lg:py-24 md:mt-14 bg-black rounded-lg">
                 <form onSubmit={handleSignup}>
                   <h3 className="mb-10 text-2xl text-[#f7f1f0] font-bold font-heading">
                     Register Account
