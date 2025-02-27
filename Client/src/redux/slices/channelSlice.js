@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { logoutUser } from "./userSlice";
 
 // Initial state from localStorage or default to an empty array if not available
 const initialState = {
@@ -25,6 +26,13 @@ const channelSlice = createSlice({
       state.channels.push(action.payload);
       localStorage.setItem("channels", JSON.stringify(state.channels));
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(logoutUser, (state) => {
+      state.channels = [];
+      localStorage.removeItem("channels");
+    });
   },
 });
 

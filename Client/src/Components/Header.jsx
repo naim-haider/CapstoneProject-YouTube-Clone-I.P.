@@ -19,10 +19,13 @@ const Header = ({
   const navigate = useNavigate();
   // console.log(userInfo);
   useEffect(() => {
-    if (userInfo?.channels?.length > 0) {
+    if (userInfo?.channels.length > 0) {
       setHasChannel(true);
+    } else {
+      setHasChannel(false);
     }
   }, [userInfo]);
+  // console.log(hasChannel);
 
   const token = localStorage.getItem("YTuserToken");
   useEffect(() => {
