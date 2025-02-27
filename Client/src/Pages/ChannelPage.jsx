@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setChannels } from "../redux/slices/channelSlice";
 import axios from "axios";
@@ -9,18 +9,19 @@ import { getTimeDuration } from "../utils/uploadTime";
 const ChannelPage = () => {
   const { videos } = getVideos();
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(null);
   const channels = useSelector((state) => state.channels.channels);
-  // const channelId = channels._id;
   const userInfo = useSelector((state) => state.user.YTuserInfo);
-  // console.log(userInfo);
   const channelId = userInfo?.channels[0];
+  // const channelId = channels._id;
+  // console.log(userInfo);
   // console.log(channelId);
   // console.log(channels);
 
   useEffect(() => {
     const fetchChannels = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/channels/${channelId}`,
+        `http://localhost:5002/api/channels/${channelId}`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -41,6 +42,40 @@ const ChannelPage = () => {
   const userVideos = videos?.filter((video) => videosId?.includes(video._id));
   // console.log(userVideos);
 
+  // Function to toggle modal visibility
+  const toggleModal = (videoId) => {
+    setIsOpen(isOpen === videoId ? null : videoId);
+  };
+
+  const handleDeleteVideo = async (videoId) => {
+    try {
+      // Delete the video from the backend
+      const response = await axios.delete(
+        `http://localhost:5002/api/videos/${videoId}`,
+        {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
+          },
+        }
+      );
+      console.log("Video deleted successfully!", response);
+
+      const updatedChannels = {
+        ...channels, // Copy the current channels object
+        channel: {
+          ...channels.channel, // Copy the current channel data
+          videos: channels.channel.videos.filter(
+            (video) => video._id !== videoId
+          ), // Filter out the deleted video
+        },
+      };
+
+      // Dispatch the updated channels to Redux
+      dispatch(setChannels(updatedChannels));
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
   return (
     <>
       <div className="absolute top-20 md:left-10 lg:left-30 xl:left-56 md:top-40 lg:top-28 w-screen  md:w-[90%] lg:w-[85%] md:h-[20%] xl:h-[30%] h-[12%] ">
@@ -115,10 +150,58 @@ const ChannelPage = () => {
                     />
                   </div>
                   <div className="h-16 mt-2 w-screen font-semibold text-md flex flex-col">
-                    <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-center justify-between mt-2 relative">
                       <p>{video?.title}</p>
-                      <i className="fa-solid fa-ellipsis-vertical cursor-pointer"></i>
+                      <div className="relative">
+                        <i
+                          className="fa-solid fa-ellipsis-vertical cursor-pointer"
+                          onClick={() => toggleModal(video?._id)}
+                        ></i>
+
+                        {isOpen === video?._id && (
+                          <div className="absolute top-0 right-0 mt- -mr-4 bg-gray-100 rounded-md shadow-lg w-auto z-50">
+                            <div className="p- max-w-xs">
+                              <div className="flex justify-center items-center px-3 py-2 gap-3">
+                                <div className="flex items-center gap-3">
+                                  <Link to={`/update-video/${video._id}`}>
+                                    <button className="font-medium text-sm cursor-pointer">
+                                      Edit
+                                    </button>
+                                  </Link>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteVideo(video?._id)
+                                    }
+                                    className="text-sm font-medium cursor-pointer"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                                <div className="flex justify-end">
+                                  <svg
+                                    onClick={toggleModal}
+                                    className="w-3 h-3 cursor-pointer"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
+
                     <div className="flex items-center mt-1">
                       <p className="text-sm text-gray-600">
                         {video?.channelId?.channelName}

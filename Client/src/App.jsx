@@ -12,6 +12,7 @@ const LoginPage = lazy(() => import("./Pages/LoginPage"));
 const CreateChannelPage = lazy(() => import("./Pages/CreateChannelPage"));
 const ChannelPage = lazy(() => import("./Pages/ChannelPage"));
 const CreateVideoPage = lazy(() => import("./Pages/CreateVideoPage"));
+const UpdateVideoPage = lazy(() => import("./Pages/UpdateVideoPage"));
 const Sidebar = lazy(() => import("./Components/Sidebar"));
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/create-channel" element={<CreateChannelPage />} />
           <Route path="/channel" element={<ChannelPage />} />
           <Route path="/create-video" element={<CreateVideoPage />} />
+          <Route path="/update-video/:videoId" element={<UpdateVideoPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
