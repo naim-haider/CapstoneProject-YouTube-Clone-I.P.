@@ -9,6 +9,8 @@ import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
 import CreateChannelPage from "./Pages/CreateChannelPage";
 import ChannelPage from "./Pages/ChannelPage";
+import VideoPage from "./Pages/VideoPage";
+import CreateVideoPage from "./Pages/CreateVideoPage";
 
 function App() {
   const { videos, error } = getVideos();
@@ -57,8 +59,10 @@ function App() {
           />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/video/:videoId" element={<VideoPage />} />
           <Route path="/create-channel" element={<CreateChannelPage />} />
           <Route path="/channel" element={<ChannelPage />} />
+          <Route path="/create-video" element={<CreateVideoPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
