@@ -27,7 +27,7 @@ const channelSchema = new mongoose.Schema(
     subscriberList: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
-      default: [], // Ensure it's always an empty array by default
+      default: [],
     },
     videos: [
       {

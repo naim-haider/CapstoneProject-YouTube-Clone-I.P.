@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.post("/", auth, createChannel);
 router.get("/:channelId", auth, getChannel);
-// Subscribe/Unsubscribe route
 router.post("/:channelId/subscribe", auth, toggleSubscription);
 
 export default router;

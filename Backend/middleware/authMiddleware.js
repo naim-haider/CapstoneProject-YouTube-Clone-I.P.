@@ -5,23 +5,22 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const auth = async (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const token = req.header("Authorization")?.replace("JWT ", "");
   // console.log("token recieved", token);
 
-  if (!token) {
-    return res.status(401).json({ error: "No token, authorization denied" });
+  if (token) {
+    try {
+      // verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id); // Fetch user from DB to ensure it's valid
+      if (!user) {
+        return res.status(401).json({ error: "Unauthorized: User not found" });
+      }
+      req.user = user; // Attach user to request if authenticated
+    } catch (error) {
+      return res.status(401).json({ error: "Token is not valid" });
+    }
   }
 
-  try {
-    // verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id); // Fetch user from DB.
-    if (!user)
-      return res.status(401).json({ error: "Unauthorized: User not found" });
-
-    req.user = user;
-    next(); // Pass control to the next middleware
-  } catch (error) {
-    res.status(401).json({ error: "Token is not valid" });
-  }
+  next();
 };

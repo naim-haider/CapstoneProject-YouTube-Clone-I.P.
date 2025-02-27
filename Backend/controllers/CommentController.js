@@ -63,7 +63,6 @@ export const editComment = async (req, res) => {
   // console.log(userId.toString());
 
   try {
-    // Find the comment by ID
     const comment = await Comment.findById(commentId);
 
     if (!comment) {
@@ -92,11 +91,19 @@ export const editComment = async (req, res) => {
 // Delete a comment
 export const deleteComment = async (req, res) => {
   const { commentId } = req.params;
+  const userId = req.user._id;
 
   try {
     const comment = await Comment.findByIdAndDelete(commentId);
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Check if the user is the owner of the comment
+    if (comment.userId.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to delete this comment" });
     }
 
     // Remove the comment from the associated video's comments array

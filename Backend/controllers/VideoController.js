@@ -5,7 +5,7 @@ import Channel from "../models/ChannelModel.js";
 export const createVideo = async (req, res) => {
   const { title, description, thumbnailUrl, videoUrl, channelId, category } =
     req.body;
-  const userId = req.user._id; // Assuming user is authenticated and userId is available from auth middleware
+  const userId = req.user._id; // authenticated userID
 
   try {
     // Check if channel exists
@@ -124,7 +124,24 @@ export const getRelatedVideos = async (req, res) => {
       category: video.category,
       _id: { $ne: videoId }, // Exclude the current video
     });
-    res.json(relatedVideos);
+
+    // Now, fetch the channel for each related video
+    const relatedVideosWithChannel = [];
+
+    for (let relatedVideo of relatedVideos) {
+      // Fetch the channel for the related video
+      const channel = await Channel.findById(relatedVideo.channelId);
+
+      if (channel) {
+        relatedVideosWithChannel.push({
+          video: relatedVideo,
+          channel: channel,
+        });
+      }
+    }
+    // console.log("related", relatedVideosWithChannel);
+
+    res.json({ relatedVideos: relatedVideosWithChannel });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error. Please try again later." });
@@ -144,12 +161,27 @@ export const getNonRelatedVideos = async (req, res) => {
     }
 
     // Find videos with a different category, excluding the current video
-    const nonMatchingCategoryVideos = await Video.find({
+    const nonRelatedVideos = await Video.find({
       category: { $ne: video.category }, // Exclude videos with the same category
       _id: { $ne: videoId }, // Exclude the current video
     });
 
-    res.json(nonMatchingCategoryVideos);
+    // Now, fetch the channel for each non-related video
+    const nonRelatedVideosWithChannel = [];
+
+    for (let nonRelatedVideo of nonRelatedVideos) {
+      // Fetch the channel for the non-related video
+      const channel = await Channel.findById(nonRelatedVideo.channelId);
+
+      if (channel) {
+        nonRelatedVideosWithChannel.push({
+          video: nonRelatedVideo,
+          channel: channel,
+        });
+      }
+    }
+    // console.log("NONrelated", nonRelatedVideosWithChannel);
+    res.json({ nonRelatedVideos: nonRelatedVideosWithChannel });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error. Please try again later." });
@@ -165,7 +197,7 @@ export const toggleLikeDislikeVideo = async (req, res) => {
 
   const { videoId } = req.params;
   const userId = req.user._id;
-  const { action } = req.body; // 'like' or 'dislike'
+  const { action } = req.body; // like or dislike
 
   if (action !== "like" && action !== "dislike") {
     return res.status(400).json({ message: "Invalid action" });

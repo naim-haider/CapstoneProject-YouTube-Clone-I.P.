@@ -4,7 +4,7 @@ import User from "../models/UserModel.js";
 // Create a new channel
 export const createChannel = async (req, res) => {
   const { channelName, description, channelBanner } = req.body;
-  const userId = req.user._id; // Assuming user is authenticated
+  const userId = req.user._id;
   const user = await User.findById(userId);
   // console.log(req);
   console.log(user);
@@ -35,7 +35,6 @@ export const createChannel = async (req, res) => {
     await channel.save();
 
     // Add channel to the user's list of channels
-
     user.channels.push(channel._id);
     await user.save();
 
@@ -122,7 +121,7 @@ export const getChannel = async (req, res) => {
     // Send the channel data and subscription status to the client
     res.json({
       channel,
-      isSubscribed,
+      isSubscribed: isSubscribed || false,
       subscribers: channel.subscribers,
     });
   } catch (error) {
