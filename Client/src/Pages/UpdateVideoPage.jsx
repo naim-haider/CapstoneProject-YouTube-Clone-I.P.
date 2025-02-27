@@ -24,7 +24,7 @@ const UpdateVideoPage = () => {
     const fetchVideoDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5002/api/videos/${videoId}`,
+          `http://localhost:5005/api/videos/${videoId}`,
           {
             headers: {
               Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -59,7 +59,7 @@ const UpdateVideoPage = () => {
       };
 
       const response = await axios.put(
-        `http://localhost:5002/api/videos/${videoId}`,
+        `http://localhost:5005/api/videos/${videoId}`,
         updatedVideo,
         {
           headers: {

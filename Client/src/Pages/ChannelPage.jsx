@@ -21,7 +21,7 @@ const ChannelPage = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       const response = await axios.get(
-        `http://localhost:5002/api/channels/${channelId}`,
+        `http://localhost:5005/api/channels/${channelId}`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -51,7 +51,7 @@ const ChannelPage = () => {
     try {
       // Delete the video from the backend
       const response = await axios.delete(
-        `http://localhost:5002/api/videos/${videoId}`,
+        `http://localhost:5005/api/videos/${videoId}`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
