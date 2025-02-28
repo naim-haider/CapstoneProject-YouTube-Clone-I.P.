@@ -130,3 +130,27 @@ export const getChannel = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+// Get channel details
+export const getChannelById = async (req, res) => {
+  const { channelId } = req.params;
+
+  try {
+    // Find the channel by its ID
+    const channel = await Channel.findById(channelId)
+      .populate("owner")
+      .populate("videos");
+
+    // If the channel is not found, return a 404 error
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+    // Send the channel data and subscription status to the client
+    res.json({
+      channel,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};

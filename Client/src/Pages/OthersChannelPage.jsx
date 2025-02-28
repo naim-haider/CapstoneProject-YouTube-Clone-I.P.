@@ -2,18 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setChannels } from "../redux/slices/channelSlice";
 import axios from "axios";
-import { getVideos } from "../api/videoApi";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getTimeDuration } from "../utils/uploadTime";
 
-const ChannelPage = () => {
-  const { videos } = getVideos();
+const OthersChannelPage = () => {
+  const { channelId } = useParams();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(null);
   const channels = useSelector((state) => state.channels.channels);
-  const userInfo = useSelector((state) => state.user.YTuserInfo);
-  const channelId = userInfo?.channels[0];
-  // const channelId = channels._id;
+  const userInfo = channels?.channel?.owner;
   // console.log(userInfo);
   // console.log(channelId);
   // console.log(channels);
@@ -21,61 +18,24 @@ const ChannelPage = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/channels/${channelId}`,
-        {
-          headers: {
-            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
-          },
-        }
+        `http://localhost:5005/api/channels/channelById/${channelId}`
       );
       dispatch(setChannels(response.data));
-      // console.log(response.data);
+      console.log(response.data);
     };
 
     fetchChannels();
   }, [dispatch]);
 
-  const videosId = channels?.channel?.videos?.map((video) => video._id);
-  // console.log(videosId);
-
-  console.log(channels);
-  const userVideos = videos?.filter((video) => videosId?.includes(video._id));
-  // console.log(userVideos);
+  //   console.log(channels);
+  const userVideos = channels?.channel?.videos;
+  //   console.log(userVideos);
 
   // Function to toggle modal visibility
   const toggleModal = (videoId) => {
     setIsOpen(isOpen === videoId ? null : videoId);
   };
 
-  const handleDeleteVideo = async (videoId) => {
-    try {
-      // Delete the video from the backend
-      const response = await axios.delete(
-        `http://localhost:5005/api/videos/${videoId}`,
-        {
-          headers: {
-            Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
-          },
-        }
-      );
-      console.log("Video deleted successfully!", response);
-
-      const updatedChannels = {
-        ...channels,
-        channel: {
-          ...channels.channel, // Copy the current channel data
-          videos: channels.channel.videos.filter(
-            (video) => video._id !== videoId
-          ), // Filter out the deleted video
-        },
-      };
-
-      // Dispatch the updated channels to Redux
-      dispatch(setChannels(updatedChannels));
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
   return (
     <>
       <div className="absolute top-20 md:left-10 lg:left-30 xl:left-56 md:top-40 lg:top-28 w-screen  md:w-[90%] lg:w-[85%] md:h-[20%] xl:h-[30%] h-[12%] ">
@@ -152,18 +112,8 @@ const ChannelPage = () => {
                             <div className="p- max-w-xs">
                               <div className="flex justify-center items-center px-3 py-2 gap-3">
                                 <div className="flex items-center gap-3">
-                                  <Link to={`/update-video/${video._id}`}>
-                                    <button className="font-medium text-sm cursor-pointer">
-                                      Edit
-                                    </button>
-                                  </Link>
-                                  <button
-                                    onClick={() =>
-                                      handleDeleteVideo(video?._id)
-                                    }
-                                    className="text-sm font-medium cursor-pointer"
-                                  >
-                                    Delete
+                                  <button className="text-sm font-medium cursor-pointer">
+                                    Report
                                   </button>
                                 </div>
                                 <div className="flex justify-end">
@@ -193,7 +143,7 @@ const ChannelPage = () => {
 
                     <div className="flex items-center mt-1">
                       <p className="text-sm text-gray-600">
-                        {video?.channelId?.channelName}
+                        {channels?.channel?.channelName}
                       </p>
                       <div className="text-gray-600 ml-1">
                         <svg
@@ -228,4 +178,4 @@ const ChannelPage = () => {
   );
 };
 
-export default ChannelPage;
+export default OthersChannelPage;

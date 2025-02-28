@@ -13,6 +13,7 @@ import SuggestedVideo from "./SuggestedVideo";
 import axios from "axios";
 import Comments from "./Comments";
 import { setChannels } from "../redux/slices/channelSlice";
+import { Link } from "react-router-dom";
 
 const VideoPlayer = ({ video }) => {
   const { channels } = useSelector((state) => state.channels);
@@ -51,20 +52,9 @@ const VideoPlayer = ({ video }) => {
   // to get Channel
   useEffect(() => {
     const fetchChannel = async () => {
-      const token = localStorage.getItem("YTuserToken");
-      if (!token) {
-        console.log("No token found in localStorage");
-        return;
-      }
-
       try {
         const response = await axios.get(
-          `http://localhost:5005/api/channels/${video?.channelId?._id}`,
-          {
-            headers: {
-              Authorization: `JWT ${token}`,
-            },
-          }
+          `http://localhost:5005/api/channels/channelById/${video?.channelId?._id}`
         );
         dispatch(setChannels(response.data));
         setChannel(response.data);
@@ -201,6 +191,8 @@ const VideoPlayer = ({ video }) => {
       console.error("Error while disliking the video", error);
     }
   };
+  // console.log(video);
+  console.log(channel);
 
   return (
     <div className="px-5 justify-center 2xl:px-4 xl:flex mt-10 lg:w-[90%] xl:w-[90%] relative lg:left-24 xl:left-28">
@@ -222,18 +214,22 @@ const VideoPlayer = ({ video }) => {
             <div className="flex justify-between flex-col md:flex-row mt-4">
               <div className="flex">
                 <div className="flex items-start">
-                  <div className="flex h-11 w-11 rounded-full overflow-hidden">
-                    <img
-                      className="h-full w-full object-cover"
-                      src={user?.avatar}
-                    />
-                  </div>
+                  <Link to={`/channel/${video?.channelId?._id}`}>
+                    <div className="flex h-11 w-11 rounded-full overflow-hidden">
+                      <img
+                        className="h-full w-full object-cover"
+                        src={user?.avatar}
+                      />
+                    </div>
+                  </Link>
                 </div>
                 <div className="flex items-center space-x-5">
                   <div className="flex flex-col ml-3">
-                    <div className="text-md font-semibold flex items-center">
-                      {channel?.channelName}
-                    </div>
+                    <Link to={`/channel/${video?.channelId?._id}`}>
+                      <div className="text-md font-semibold flex items-center">
+                        {channel?.channel?.channelName}
+                      </div>
+                    </Link>
                     <div className=" text-sm">
                       {subscriberCount} subscribers
                     </div>

@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getVideos } from "./api/videoApi";
 import Header from "./Components/Header";
+import OthersChannelPage from "./Pages/OthersChannelPage";
 
 // For performance Optimization //
 const HomePage = lazy(() => import("./Pages/HomePage"));
@@ -68,6 +69,7 @@ function App() {
           <Route path="/video/:videoId" element={<VideoPage />} />
           <Route path="/create-channel" element={<CreateChannelPage />} />
           <Route path="/channel" element={<ChannelPage />} />
+          <Route path="/channel/:channelId" element={<OthersChannelPage />} />
           <Route path="/create-video" element={<CreateVideoPage />} />
           <Route path="/update-video/:videoId" element={<UpdateVideoPage />} />
         </Routes>

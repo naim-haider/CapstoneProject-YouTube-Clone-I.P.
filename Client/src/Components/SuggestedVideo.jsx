@@ -21,9 +21,6 @@ function SuggestedVideo({ relatedVideo, nonRelatedVideo }) {
               />
               <ul className="flex flex-col ">
                 <li className="font-semibold pt-1">{video?.video?.title}</li>
-                <li className="font-semibold mb-1">
-                  {video?.video?.description} ...
-                </li>
                 <li className="text-sm text-slate-400 flex gap-2">
                   {video?.channel?.channelName}
                   <svg
@@ -61,9 +58,6 @@ function SuggestedVideo({ relatedVideo, nonRelatedVideo }) {
               />
               <ul className="flex flex-col ">
                 <li className="font-semibold pt-1">{video?.video?.title}</li>
-                <li className="font-semibold mb-1">
-                  {video?.video?.description} ...
-                </li>
                 <li className="text-sm text-slate-400 flex gap-2">
                   {video?.channel?.channelName}
                   <svg
