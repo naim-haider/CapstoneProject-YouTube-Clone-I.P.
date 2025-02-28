@@ -21,6 +21,10 @@ const CreateVideoPage = () => {
     "Music",
     "Cartoon",
     "News",
+    "Artificial Inteligence",
+    "Data Science",
+    "Debates",
+    "Podcasts",
     "Live",
     "Cricket",
     "Football",
@@ -32,9 +36,6 @@ const CreateVideoPage = () => {
     "Reverberation",
     "Mixes",
     "1990s",
-    "Telugu cinema",
-    "Dramedy",
-    "Dubbing",
     "Indian soap opera",
   ];
 

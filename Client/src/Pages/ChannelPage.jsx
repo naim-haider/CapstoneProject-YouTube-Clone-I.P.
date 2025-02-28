@@ -121,17 +121,6 @@ const ChannelPage = () => {
                 key={video._id}
                 className="h-[80%] w-[94%] md:w-[32%] ml-3 md:ml-0"
               >
-                <div className="w-full">
-                  <iframe
-                    height={200}
-                    className="w-full hidden"
-                    id="video"
-                    src={video?.videoUrl}
-                    title={video?.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen=""
-                  />
-                </div>
                 <Link to={`/video/${video?._id}`}>
                   <div className="w-full" id="image">
                     <img

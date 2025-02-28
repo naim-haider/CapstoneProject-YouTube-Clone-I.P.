@@ -99,6 +99,10 @@ const UpdateVideoPage = () => {
     "Cartoon",
     "News",
     "Live",
+    "Artificial Inteligence",
+    "Data Science",
+    "Debates",
+    "Podcasts",
     "Cricket",
     "Football",
     "India national cricket team",
@@ -109,9 +113,6 @@ const UpdateVideoPage = () => {
     "Reverberation",
     "Mixes",
     "1990s",
-    "Telugu cinema",
-    "Dramedy",
-    "Dubbing",
     "Indian soap opera",
   ];
 

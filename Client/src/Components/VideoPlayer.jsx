@@ -213,7 +213,7 @@ const VideoPlayer = ({ video }) => {
                 height="100%"
                 width="100%"
                 controls
-                playing={false}
+                playing={true}
               />
             </div>
             <div className="font-bold text-sm md:text-xl mt-4 line-clamp-2">
