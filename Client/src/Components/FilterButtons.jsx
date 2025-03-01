@@ -68,7 +68,7 @@ const FilterButtons = ({ onFilter }) => {
 
   return (
     <section
-      className="fixed md:top-22 top-15.5 py-3 bg-white  overflow-x-auto md:left-7 lg:left-28 xl:left-32 w-screen  md:w-full px-2 md:px-3 h-[10%] flex items-center md:mt-5 xl:mt-2"
+      className="fixed md:top-22 top-15.5 py-3 bg-white overflow-x-auto md:left-7 lg:left-28 xl:left-32 w-screen  md:w-full px-2 md:px-3 h-[10%] flex items-center md:mt-5 xl:mt-2"
       id="feature-box"
     >
       {canScrollLeft && (

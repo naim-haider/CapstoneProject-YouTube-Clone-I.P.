@@ -312,7 +312,7 @@ const Header = ({
           >
             <div className="w-full">
               <Link to={"/"}>
-                <div className="h-10 w-[70%] gap-2 mt-5 py-12 flex flex-col justify-center items-center hover:bg-slate-100 rounded-md cursor-pointer ">
+                <div className="h-10 w-[70%] gap-2 mt-5 py-12 pl-6 flex flex-col justify-center items-center hover:bg-slate-100 rounded-md cursor-pointer ">
                   <div className="w-7 h-7">
                     <i className="fa-solid fa-xl fa-house fa-lg " />
                   </div>

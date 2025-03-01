@@ -38,7 +38,7 @@ const ChannelPage = () => {
   const videosId = channels?.channel?.videos?.map((video) => video._id);
   // console.log(videosId);
 
-  console.log(channels);
+  // console.log(channels);
   const userVideos = videos?.filter((video) => videosId?.includes(video._id));
   // console.log(userVideos);
 
@@ -126,7 +126,7 @@ const ChannelPage = () => {
                     <img
                       src={video?.thumbnailUrl}
                       alt="thumbnail"
-                      className="w-full rounded-2xl cursor-pointer"
+                      className="w-full xl:h-75 md:h-34 lg:h-44 rounded-2xl cursor-pointer"
                     />
                   </div>
                 </Link>

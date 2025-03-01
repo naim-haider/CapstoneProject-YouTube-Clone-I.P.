@@ -31,7 +31,7 @@ const VideoCard = ({ video }) => {
             <img
               src={video?.thumbnailUrl}
               alt="thumbnail"
-              className="w-full rounded-2xl cursor-pointer"
+              className="w-full xl:h-75 md:h-34 lg:h-44 rounded-2xl cursor-pointer"
             />
           </div>
         </Link>

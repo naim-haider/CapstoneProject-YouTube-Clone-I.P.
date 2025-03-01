@@ -3,7 +3,6 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getVideos } from "./api/videoApi";
 import Header from "./Components/Header";
-import OthersChannelPage from "./Pages/OthersChannelPage";
 
 // For performance Optimization //
 const HomePage = lazy(() => import("./Pages/HomePage"));
@@ -12,6 +11,7 @@ const SignupPage = lazy(() => import("./Pages/SignupPage"));
 const LoginPage = lazy(() => import("./Pages/LoginPage"));
 const CreateChannelPage = lazy(() => import("./Pages/CreateChannelPage"));
 const ChannelPage = lazy(() => import("./Pages/ChannelPage"));
+const OthersChannelPage = lazy(() => import("./Pages/OthersChannelPage"));
 const CreateVideoPage = lazy(() => import("./Pages/CreateVideoPage"));
 const UpdateVideoPage = lazy(() => import("./Pages/UpdateVideoPage"));
 const Sidebar = lazy(() => import("./Components/Sidebar"));

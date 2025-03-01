@@ -6,7 +6,7 @@ const VideoList = ({ videos }) => {
 
   return (
     <section
-      className="w-[90%] pb-16 py-4  md:py-0 -z-30 absolute top-32 md:left-10 lg:left-28 md:top-55 lg:top-60 xl:top-50 flex justify-center overflow-y-visible gap-y-2 flex-wrap md:gap-x-3 lg:gap-x-1 xl:gap-x-3 xl:gap-y-36 mt-3"
+      className="w-[90%] pb-16 py-4 xl:pb-24 md:py-0 -z-30 absolute top-32 md:left-10 lg:left-28 md:top-55 lg:top-60 xl:top-50 flex justify-center overflow-y-visible gap-y-2 flex-wrap md:gap-x-3 lg:gap-x-1 xl:gap-x-3 xl:gap-y-36 mt-3"
       id="content-body"
     >
       {videos.length === 0 ? (

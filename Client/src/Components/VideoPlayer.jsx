@@ -196,10 +196,10 @@ const VideoPlayer = ({ video }) => {
 
   return (
     <div className="px-5 justify-center 2xl:px-4 xl:flex mt-10 lg:w-[90%] xl:w-[90%] relative lg:left-24 xl:left-28">
-      <div className="  h-[calc(100%-56px)] mt-16">
+      <div className="  h-[calc(100%-56px)] mt-16 md:mt-28">
         <div className="w-full max-w-[1580px] flex flex-col ">
-          <div className="flex flex-col px-4 py-3 lg:py-6">
-            <div className="h-[200px] xl:h-[700px] md:h-full ml-[-16px] mr-[-16px] lg:ml-0 lg:mr-0">
+          <div className="flex flex-col px-4 py-3">
+            <div className="h-[200px] xl:h-[700px] md:h-100 ml-[-16px] mr-[-16px] lg:ml-0 lg:mr-0">
               <ReactPlayer
                 url={video?.videoUrl}
                 height="100%"
@@ -267,11 +267,11 @@ const VideoPlayer = ({ video }) => {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2 md:ml-8 ml-3 bg-gray-100 px-6 rounded-full">
+                <div className="flex items-center gap-2 cursor-pointer md:ml-8 ml-3 bg-gray-100 px-6 rounded-full">
                   <RiShareForwardLine className="text-2xl" />
                   <span>Share</span>
                 </div>
-                <div className="flex items-center bg-gray-100 gap-1 justify-center h-12 px-4 rounded-3xl ml-3">
+                <div className="flex items-center cursor-pointer bg-gray-100 gap-1 justify-center h-12 px-4 rounded-3xl ml-3">
                   <BsThreeDots />
                 </div>
               </div>
@@ -284,13 +284,13 @@ const VideoPlayer = ({ video }) => {
               <p>Comments</p>
             </div>
           </div>
-          <div className="flex flex-col px-4 max-h-screen overflow-y-scroll overflow-x-hidden">
+          <div className="flex flex-col px-4 max-h-screen overflow-y-scroll overflow-x-hidden xl:mb-20">
             <Comments videoId={video._id} />
           </div>
         </div>
       </div>
       <hr className="border-gray-400 xl:border-0" />
-      <div className="">
+      <div className="h-screen  xl:overflow-y-auto scrollbar-hidden">
         <SuggestedVideo
           relatedVideo={relatedVideo}
           nonRelatedVideo={nonRelatedVideo}

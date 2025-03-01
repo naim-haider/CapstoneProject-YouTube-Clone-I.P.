@@ -186,6 +186,7 @@ const UpdateVideoPage = () => {
                     name="choices"
                     className="cursor-pointer"
                   >
+                    <option value="">Select the Category</option>
                     {categories?.map((category) => (
                       <option key={category} value={category}>
                         {category}

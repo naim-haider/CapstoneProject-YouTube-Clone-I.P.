@@ -21,7 +21,7 @@ export const createChannel = async (req, res) => {
     if (existingChannel) {
       return res.status(400).json({ message: "Channel name already exists" });
     }
-    console.log("user", user);
+    // console.log("user", user);
 
     // Create the new channel
     const channel = new Channel({
@@ -30,7 +30,7 @@ export const createChannel = async (req, res) => {
       description: description,
       channelBanner: channelBanner,
     });
-    console.log("channel", channel);
+    // console.log("channel", channel);
 
     // Save the channel
     await channel.save();

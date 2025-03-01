@@ -7,7 +7,7 @@ function SuggestedVideo({ relatedVideo, nonRelatedVideo }) {
   // console.log(nonRelatedVideo);
 
   return (
-    <div className="flex xl:flex-col flex-wrap justify-center gap-4 p-4 xl:pt-22 mb-18 xl:mb-0">
+    <div className="flex xl:flex-col flex-wrap justify-center gap-4 p-4 xl:pt-22 mb-18 pb-20 md:pb-8 xl:mb-0 xl:mr-8">
       {relatedVideo?.map((video) => {
         const uploadTime = getTimeDuration(video?.video?.uploadDate);
 
