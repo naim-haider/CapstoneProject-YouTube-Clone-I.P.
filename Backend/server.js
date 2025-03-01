@@ -27,6 +27,10 @@ app.use("/api", videoRoutes);
 // Use comment routes
 app.use("/api", commentRoutes);
 
+app.get("/", (req, res) => {
+  res.send("root route");
+});
+
 const PORT = process.env.PORT || 5005;
 
 app.listen(PORT, () => {
