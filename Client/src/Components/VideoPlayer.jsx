@@ -16,6 +16,7 @@ import { setChannels } from "../redux/slices/channelSlice";
 import { Link } from "react-router-dom";
 
 const VideoPlayer = ({ video }) => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const { channels } = useSelector((state) => state.channels);
   const [user, setUser] = useState();
   const [relatedVideo, setRelatedVideo] = useState([]);
@@ -40,7 +41,7 @@ const VideoPlayer = ({ video }) => {
   useEffect(() => {
     const fetchUserById = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/users/user/${video?.uploader?._id}`
+        `${VITE_API_ENDPOINT}/users/user/${video?.uploader?._id}`
       );
       setUser(response.data);
       // console.log(response.data);
@@ -54,7 +55,7 @@ const VideoPlayer = ({ video }) => {
     const fetchChannel = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5005/api/channels/channelById/${video?.channelId?._id}`
+          `${VITE_API_ENDPOINT}/channels/channelById/${video?.channelId?._id}`
         );
         dispatch(setChannels(response.data));
         setChannel(response.data);
@@ -78,7 +79,7 @@ const VideoPlayer = ({ video }) => {
     }
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/channels/${channel.channel._id}/subscribe`,
+        `${VITE_API_ENDPOINT}/channels/${channel.channel._id}/subscribe`,
         {},
         {
           headers: {
@@ -100,7 +101,7 @@ const VideoPlayer = ({ video }) => {
       // console.log("id", video);
 
       const response = await axios.get(
-        `http://localhost:5005/api/videos/${video?._id}/related`,
+        `${VITE_API_ENDPOINT}/videos/${video?._id}/related`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -121,7 +122,7 @@ const VideoPlayer = ({ video }) => {
       // console.log("id", video);
 
       const response = await axios.get(
-        `http://localhost:5005/api/videos/${video?._id}/non-reated-video`,
+        `${VITE_API_ENDPOINT}/videos/${video?._id}/non-reated-video`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -147,7 +148,7 @@ const VideoPlayer = ({ video }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/videos/${video._id}/like-dislike`,
+        `${VITE_API_ENDPOINT}/videos/${video._id}/like-dislike`,
         { action: "like" },
         {
           headers: {
@@ -174,7 +175,7 @@ const VideoPlayer = ({ video }) => {
     }
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/videos/${video._id}/like-dislike`,
+        `${VITE_API_ENDPOINT}/videos/${video._id}/like-dislike`,
         { action: "dislike" },
         {
           headers: {

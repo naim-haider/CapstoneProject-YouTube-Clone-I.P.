@@ -9,9 +9,9 @@ import { auth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", auth, createChannel);
-router.get("/:channelId", auth, getChannel);
-router.get("/channelById/:channelId", getChannelById);
-router.post("/:channelId/subscribe", auth, toggleSubscription);
+router.post("/channels/", auth, createChannel);
+router.get("/channels/:channelId", auth, getChannel);
+router.get("/channels/channelById/:channelId", getChannelById);
+router.post("/channels/:channelId/subscribe", auth, toggleSubscription);
 
 export default router;

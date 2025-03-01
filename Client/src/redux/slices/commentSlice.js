@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const { VITE_API_ENDPOINT } = import.meta.env;
+
 // Add Comment
 export const addComment = createAsyncThunk(
   "comments/addComment",
@@ -13,7 +15,7 @@ export const addComment = createAsyncThunk(
     }
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/comments`,
+        `${VITE_API_ENDPOINT}/comments`,
         {
           videoId,
           text,
@@ -50,7 +52,7 @@ export const getComments = createAsyncThunk(
 
       // If not in localStorage, fetch from the API
       const response = await axios.get(
-        `http://localhost:5005/api/comments/${videoId}`
+        `${VITE_API_ENDPOINT}/comments/${videoId}`
       );
       return response.data;
     } catch (error) {
@@ -65,7 +67,7 @@ export const editComment = createAsyncThunk(
   async ({ videoId, commentId, text }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5005/api/comments/${commentId}`,
+        `${VITE_API_ENDPOINT}/comments/${commentId}`,
         { text },
         {
           headers: {
@@ -94,7 +96,7 @@ export const deleteComment = createAsyncThunk(
   "comments/deleteComment",
   async ({ videoId, commentId }, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:5005/api/comments/${commentId}`, {
+      await axios.delete(`${VITE_API_ENDPOINT}/comments/${commentId}`, {
         headers: {
           Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
         },

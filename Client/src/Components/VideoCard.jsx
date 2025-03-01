@@ -4,6 +4,7 @@ import { getTimeDuration } from "../utils/uploadTime";
 import axios from "axios";
 
 const VideoCard = ({ video }) => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const [user, setUser] = useState();
 
   //===upload time===//
@@ -13,7 +14,7 @@ const VideoCard = ({ video }) => {
   useEffect(() => {
     const fetchUserById = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/users/user/${video?.uploader?._id}`
+        `${VITE_API_ENDPOINT}/users/user/${video?.uploader?._id}`
       );
       setUser(response.data);
       // console.log(response.data);

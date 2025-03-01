@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { getTimeDuration } from "../utils/uploadTime";
 
 const OthersChannelPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const { channelId } = useParams();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(null);
@@ -18,7 +19,7 @@ const OthersChannelPage = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/channels/channelById/${channelId}`
+        `${VITE_API_ENDPOINT}/channels/channelById/${channelId}`
       );
       dispatch(setChannels(response.data));
       console.log(response.data);

@@ -11,6 +11,7 @@ import { getTimeDuration } from "../utils/uploadTime";
 import axios from "axios";
 
 const Comments = ({ videoId }) => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const dispatch = useDispatch();
   const { comments, loading, error } = useSelector((state) => state.comments);
   const [newComment, setNewComment] = useState("");
@@ -71,7 +72,7 @@ const Comments = ({ videoId }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:5005/api/users`);
+        const response = await axios.get(`${VITE_API_ENDPOINT}/users`);
         localStorage.setItem("users", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error fetching users:", error);

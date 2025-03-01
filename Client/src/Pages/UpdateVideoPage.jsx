@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { setChannels } from "../redux/slices/channelSlice";
 
 const UpdateVideoPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const { videoId } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,7 +25,7 @@ const UpdateVideoPage = () => {
     const fetchVideoDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5005/api/videos/${videoId}`,
+          `${VITE_API_ENDPOINT}/videos/${videoId}`,
           {
             headers: {
               Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -59,7 +60,7 @@ const UpdateVideoPage = () => {
       };
 
       const response = await axios.put(
-        `http://localhost:5005/api/videos/${videoId}`,
+        `${VITE_API_ENDPOINT}/videos/${videoId}`,
         updatedVideo,
         {
           headers: {

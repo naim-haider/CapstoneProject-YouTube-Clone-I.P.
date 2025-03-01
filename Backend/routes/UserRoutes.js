@@ -9,15 +9,15 @@ import {
 const router = express.Router();
 
 // User Sign Up
-router.post("/signup", signUp);
+router.post("/users/signup", signUp);
 
 // User Login
-router.post("/signin", signIn);
+router.post("/users/signin", signIn);
 
 // get all user
-router.get("/", getAllUsers);
+router.get("/users/", getAllUsers);
 
 // get user by id
-router.get("/user/:id", getUserById);
+router.get("/users/user/:id", getUserById);
 
 export default router;

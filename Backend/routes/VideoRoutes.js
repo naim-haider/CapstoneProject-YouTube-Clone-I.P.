@@ -14,27 +14,27 @@ import { auth } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // Create a new video (requires authentication)
-router.post("/", auth, createVideo);
+router.post("/videos/", auth, createVideo);
 
 // Get all videos
-router.get("/", getAllVideos);
+router.get("/videos/", getAllVideos);
 
 // Get a specific video
-router.get("/:videoId", getVideo);
+router.get("/videos/:videoId", getVideo);
 
 // Edit a video (requires authentication)
-router.put("/:videoId", auth, editVideo);
+router.put("/videos/:videoId", auth, editVideo);
 
 // Get related videos based on category
-router.get("/:videoId/related", getRelatedVideos);
+router.get("/videos/:videoId/related", getRelatedVideos);
 
 // Get videos that do not match the category of the given video
-router.get("/:videoId/non-reated-video", getNonRelatedVideos);
+router.get("/videos/:videoId/non-reated-video", getNonRelatedVideos);
 
 // Toggle like/dislike on a video
-router.post("/:videoId/like-dislike", auth, toggleLikeDislikeVideo);
+router.post("/videos/:videoId/like-dislike", auth, toggleLikeDislikeVideo);
 
 // Delete a video (requires authentication)
-router.delete("/:videoId", auth, deleteVideo);
+router.delete("/videos/:videoId", auth, deleteVideo);
 
 export default router;

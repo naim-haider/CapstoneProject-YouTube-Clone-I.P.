@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const API_URL = "http://localhost:5005/api";
+const { VITE_API_ENDPOINT } = import.meta.env;
+const API_URL = VITE_API_ENDPOINT;
 
 export const getVideos = () => {
   const [videos, setVideos] = useState([]);

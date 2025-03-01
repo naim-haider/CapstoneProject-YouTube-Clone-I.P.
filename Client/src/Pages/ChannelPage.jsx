@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { getTimeDuration } from "../utils/uploadTime";
 
 const ChannelPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const { videos } = getVideos();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(null);
@@ -21,7 +22,7 @@ const ChannelPage = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       const response = await axios.get(
-        `http://localhost:5005/api/channels/${channelId}`,
+        `${VITE_API_ENDPOINT}/channels/${channelId}`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,
@@ -51,7 +52,7 @@ const ChannelPage = () => {
     try {
       // Delete the video from the backend
       const response = await axios.delete(
-        `http://localhost:5005/api/videos/${videoId}`,
+        `${VITE_API_ENDPOINT}/videos/${videoId}`,
         {
           headers: {
             Authorization: `JWT ${localStorage.getItem("YTuserToken")}`,

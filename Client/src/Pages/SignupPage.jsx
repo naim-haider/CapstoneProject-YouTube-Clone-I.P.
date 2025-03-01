@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,10 +14,12 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5005/api/users/signup",
-        { userName, email, password, avatar }
-      );
+      const { data } = await axios.post(`${VITE_API_ENDPOINT}/users/signup`, {
+        userName,
+        email,
+        password,
+        avatar,
+      });
       console.log("user register data", data);
       setUserName("");
       setEmail("");

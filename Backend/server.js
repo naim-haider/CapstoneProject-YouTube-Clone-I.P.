@@ -19,13 +19,13 @@ app.use(express.json()); // to parse JSON bodies
 
 // ===All Routes=== //
 // Use user routes
-app.use("/api/users", userRoutes);
+app.use("/api", userRoutes);
 // Use channel routes
-app.use("/api/channels", channelRoutes);
+app.use("/api", channelRoutes);
 // Use video routes
-app.use("/api/videos", videoRoutes);
+app.use("/api", videoRoutes);
 // Use comment routes
-app.use("/api/comments", commentRoutes);
+app.use("/api", commentRoutes);
 
 const PORT = process.env.PORT || 5005;
 

@@ -6,6 +6,7 @@ import { addChannel } from "../redux/slices/channelSlice";
 import { addChannelToUser } from "../redux/slices/userSlice";
 
 const CreateChannelPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const [channelName, setChannelName] = useState("");
   const [description, setDescription] = useState("");
   const [channelBanner, setChannelBanner] = useState("");
@@ -18,7 +19,7 @@ const CreateChannelPage = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5005/api/channels",
+        `${VITE_API_ENDPOINT}/channels`,
         {
           channelName,
           description,

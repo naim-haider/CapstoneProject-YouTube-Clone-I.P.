@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const CreateVideoPage = () => {
+  const { VITE_API_ENDPOINT } = import.meta.env;
   const [isLogin, setIsLogin] = useState(false);
   const [hasChannel, setHasChannel] = useState(false);
   const userInfo = useSelector((state) => state.user.YTuserInfo);
@@ -59,7 +60,7 @@ const CreateVideoPage = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5005/api/videos",
+        `${VITE_API_ENDPOINT}/videos`,
         {
           title,
           description,
