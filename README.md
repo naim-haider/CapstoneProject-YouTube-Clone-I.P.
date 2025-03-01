@@ -2,6 +2,17 @@
 
 This project is a full-stack YouTube clone built with the MERN stack (MongoDB, Express, React, Node.js) to mimic core features of YouTube. Users can view, like, comment on videos, create channels, and manage their profile using JWT-based authentication.
 
+...
+
+## Deployment
+
+The application is deployed and can be accessed using the following links:
+
+- **Frontend (React app)**: https://capstone-project-you-tube-clone-i-p.vercel.app/
+- **Backend (API)**: https://capstone-project-you-tube-clone-i-p-backend.vercel.app/
+
+---
+
 ## Features
 
 - **User Authentication**: Sign up, log in, and JWT authentication for secure access.
